@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine? ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f4e4a6;
+      --gold-glow: rgba(212, 175, 55, 0.6);
+      --pink: #e8a0bf;
+      --pink-dark: #c77d9e;
+      --red: #b22222;
+      --dark-bg: #0a0a12;
+      --dark-purple: #1a0a2e;
+      --transition: 0.5s ease;
+    }
+
+    /* ===== Reset & Base ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Magic wand cursor - golden wand with sparkle tip */
+    body {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 21 L10 14 L22 2" stroke="%23d4af37" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="22" cy="2" r="2.5" fill="%23f4e4a6" stroke="%23d4af37" stroke-width="0.5"/></svg>') 2 22, auto;
+      font-family: 'Cinzel', serif;
+      background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-purple) 50%, #0d0d1a 100%);
+      min-height: 100vh;
+      position: relative;
+      color: var(--gold-light);
+    }
+
+    /* ===== Starry Night Sky Background ===== */
+    .sky {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.6), transparent);
+      background-size: 200px 200px;
+      animation: twinkle 4s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ===== Floating Sparkles ===== */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--gold-light);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--gold), 0 0 12px var(--gold-glow);
+      animation: float-sparkle 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .sparkle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { left: 25%; top: 60%; animation-delay: 1s; }
+    .sparkle:nth-child(3) { left: 45%; top: 15%; animation-delay: 2s; }
+    .sparkle:nth-child(4) { left: 70%; top: 45%; animation-delay: 0.5s; }
+    .sparkle:nth-child(5) { left: 85%; top: 25%; animation-delay: 1.5s; }
+    .sparkle:nth-child(6) { left: 15%; top: 75%; animation-delay: 2.5s; }
+    .sparkle:nth-child(7) { left: 55%; top: 80%; animation-delay: 0.8s; }
+    .sparkle:nth-child(8) { left: 90%; top: 60%; animation-delay: 1.2s; }
+
+    @keyframes float-sparkle {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.8;
+      }
+      25% {
+        transform: translate(10px, -15px) scale(1.2);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(-5px, -25px) scale(0.9);
+        opacity: 0.6;
+      }
+      75% {
+        transform: translate(15px, -10px) scale(1.1);
+        opacity: 1;
+      }
+    }
+
+    /* ===== Main Container ===== */
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ===== Page 1 - Question State ===== */
+    .page-question {
+      transition: opacity var(--transition);
+    }
+
+    .page-question.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      color: var(--gold-light);
+      text-shadow:
+        0 0 10px var(--gold-glow),
+        0 0 20px var(--gold-glow),
+        0 0 40px rgba(212, 175, 55, 0.4);
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: var(--pink);
+      font-weight: 400;
+      margin-bottom: 3rem;
+      text-shadow: 0 0 10px rgba(232, 160, 191, 0.5);
+      font-style: italic;
+    }
+
+    .buttons-wrapper {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Yes Button - clickable */
+    .btn-yes {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      padding: 1rem 2.5rem;
+      background: linear-gradient(135deg, var(--red), var(--pink-dark));
+      color: white;
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 21 L10 14 L22 2" stroke="%23d4af37" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="22" cy="2" r="2.5" fill="%23f4e4a6" stroke="%23d4af37" stroke-width="0.5"/></svg>') 2 22, pointer;
+      transition: all var(--transition);
+      box-shadow:
+        0 0 15px rgba(212, 175, 55, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      position: relative;
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.08);
+      box-shadow:
+        0 0 25px var(--gold-glow),
+        0 0 40px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+      background: linear-gradient(135deg, var(--pink-dark), var(--red));
+    }
+
+    .btn-yes:active {
+      transform: scale(1.02);
+    }
+
+    /* No Button - runs away */
+    .btn-no {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      padding: 0.9rem 2rem;
+      background: rgba(80, 80, 80, 0.5);
+      color: #999;
+      border: 1px solid #555;
+      border-radius: 8px;
+      cursor: default;
+      transition: all 0.3s ease;
+      position: absolute;
+      user-select: none;
+    }
+
+    .btn-no:hover,
+    .btn-no:active,
+    .btn-no:focus {
+      cursor: default;
+    }
+
+    /* Wrapper for No button to position it */
+    .btn-no-wrapper {
+      position: relative;
+      width: 140px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: left 0.3s ease, top 0.3s ease;
+    }
+
+    /* ===== Page 2 - Scrolling Letter (movie credits style) ===== */
+    .page-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 2;
+    }
+
+    .page-message.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .scroll-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      padding: 80px 20px;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scroll-content {
+      max-width: 800px;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      line-height: 1.8;
+      text-align: center;
+      color: var(--gold-light);
+      text-shadow:
+        0 0 10px var(--gold-glow),
+        0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .scroll-content .highlight {
+      color: var(--pink);
+      text-shadow: 0 0 15px rgba(232, 160, 191, 0.6);
+    }
+
+    .scroll-content p {
+      margin-bottom: 2rem;
+    }
+
+    /* ===== Floating Hearts ===== */
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      color: var(--pink);
+      opacity: 0.4;
+      animation: float-heart 8s ease-in-out infinite;
+      text-shadow: 0 0 10px rgba(232, 160, 191, 0.5);
+    }
+
+    .heart:nth-child(1) { left: 5%; animation-delay: 0s; font-size: 16px; }
+    .heart:nth-child(2) { left: 15%; animation-delay: 2s; font-size: 24px; }
+    .heart:nth-child(3) { left: 30%; animation-delay: 1s; font-size: 18px; }
+    .heart:nth-child(4) { left: 45%; animation-delay: 3s; font-size: 22px; }
+    .heart:nth-child(5) { left: 60%; animation-delay: 0.5s; font-size: 20px; }
+    .heart:nth-child(6) { left: 75%; animation-delay: 2.5s; font-size: 26px; }
+    .heart:nth-child(7) { left: 90%; animation-delay: 1.5s; font-size: 18px; }
+    .heart:nth-child(8) { left: 20%; animation-delay: 4s; font-size: 14px; }
+    .heart:nth-child(9) { left: 50%; animation-delay: 3.5s; font-size: 20px; }
+    .heart:nth-child(10) { left: 80%; animation-delay: 2s; font-size: 16px; }
+
+    @keyframes float-heart {
+      0%, 100% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.4;
+      }
+      90% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Hide audio elements (no visible controls) */
+    audio { display: none; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+      .buttons-wrapper {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .btn-no-wrapper {
+        width: 100%;
+        height: 60px;
+      }
+
+      .btn-no {
+        position: absolute;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Starry night sky -->
+  <div class="sky">
+    <div class="stars"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+  </div>
+
+  <!-- Floating hearts (visible on page 2) -->
+  <div class="hearts-container" id="heartsContainer">
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+    <span class="heart">❤️</span>
+  </div>
+
+  <div class="container">
+    <!-- PAGE 1: Question -->
+    <div class="page-question" id="pageQuestion">
+      <h1 class="title">Will you be my Valentine?</h1>
+      <p class="subtitle">I solemnly swear that I adore you.</p>
+      <div class="buttons-wrapper">
+        <button class="btn-yes" id="btnYes">Yes ❤️</button>
+        <div class="btn-no-wrapper">
+          <button class="btn-no" id="btnNo">No 💔</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: Scrolling Romantic Letter -->
+    <div class="page-message" id="pageMessage">
+      <div class="scroll-container" id="scrollContainer">
+        <div class="scroll-content" id="scrollContent">
+          <p>My dearest love,</p>
+
+          <p>When I met you, something in my world quietly changed. It felt as if an ordinary day had turned into something touched by magic - warm, unexpected, and beautiful.</p>
+
+          <p>You are the light that brights my darkest days. The calm in my chaos. The smile that makes everything else fade into the background.</p>
+
+          <p>With you, even the simplest moments feel special. A conversation, a laugh, a quiet silence (especially the silence, because I'm usually the quiet one) — they all mean more because they are shared with you.</p>
+
+          <p>You have shown me that love is not about grand gestures. It is about choosing each other every day. It is about kindness, patience, and standing side by side no matter what comes.</p>
+
+          <p>I don’t promise perfection. I promise effort. I promise honesty. I promise to keep choosing you in the easy days and in the difficult ones.</p>
+
+          <p>You are my always — not because it sounds poetic, but because it feels true. You are the person I want beside me in every chapter still waiting to be played.</p>
+
+          <p>Thank you for being you. For your warmth, your strength, your heart.</p>
+          <p> </p> <br> <br> <br> <br> <br>
+
+          <p id="loveYou">I love you. Always. ❤️</p> <br> <br> <br> <br> <br> <br> <br> <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio elements - no visible controls -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="love-theme.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="wandSound" preload="auto">
+    <source src="magic-wand.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="yesSound" preload="auto">
+    <source src="yes-chime.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="noSound" preload="auto">
+    <source src="nope.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    /**
+     * Valentine's Day - Harry Potter Themed
+     * Single-page app with question and love message states
+     * All sounds: HTML5 <audio> (love-theme, magic-wand, yes-chime, nope)
+     */
+
+    // DOM elements
+    const pageQuestion = document.getElementById('pageQuestion');
+    const pageMessage = document.getElementById('pageMessage');
+    const scrollContainer = document.getElementById('scrollContainer');
+    const scrollContent = document.getElementById('scrollContent');
+    const btnYes = document.getElementById('btnYes');
+    const btnNo = document.getElementById('btnNo');
+    const btnNoWrapper = document.querySelector('.btn-no-wrapper');
+    const heartsContainer = document.getElementById('heartsContainer');
+
+    // Audio elements
+    const bgMusic = document.getElementById('bgMusic');
+    const wandSound = document.getElementById('wandSound');
+    const yesSound = document.getElementById('yesSound');
+    const noSound = document.getElementById('noSound');
+
+    // Hide hearts initially (show only on page 2)
+    heartsContainer.style.opacity = '0';
+
+    // ===== Background Music =====
+    let bgMusicStarted = false;
+
+    /**
+     * Start background music (called only when Yes button is clicked).
+     * Smooth fade-in: volume 0 → 0.5 over 4 seconds (requestAnimationFrame).
+     */
+    function startBackgroundMusic() {
+      if (bgMusicStarted || !bgMusic) return;
+      bgMusicStarted = true;
+
+      bgMusic.volume = 0;
+      const playPromise = bgMusic.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => startMusicFadeIn(bgMusic))
+          .catch(() => { bgMusicStarted = false; });
+      } else {
+        startMusicFadeIn(bgMusic);
+      }
+    }
+
+    /**
+     * Smooth fade-in for background music: volume 0 → 0.5 over 4 seconds (requestAnimationFrame)
+     */
+    function startMusicFadeIn(audio) {
+      const fadeDuration = 4000;
+      const targetVolume = 0.5;
+      const startTime = performance.now();
+
+      function fadeStep(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / fadeDuration, 1);
+        audio.volume = progress * targetVolume;
+        if (progress < 1) {
+          requestAnimationFrame(fadeStep);
+        } else {
+          audio.volume = targetVolume;
+        }
+      }
+      requestAnimationFrame(fadeStep);
+    }
+
+    // ===== Button Sound Helpers =====
+
+    /** Play wand sound (Yes button hover) - reset currentTime to avoid overlap */
+    function playWandSound() {
+      if (!wandSound) return;
+      wandSound.currentTime = 0;
+      wandSound.play().catch(() => {});
+    }
+
+    /** Stop wand sound when cursor leaves Yes button */
+    function stopWandSound() {
+      if (!wandSound) return;
+      wandSound.pause();
+      wandSound.currentTime = 0;
+    }
+
+    /** Play yes chime (Yes button click) */
+    function playYesSound() {
+      if (!yesSound) return;
+      yesSound.currentTime = 0;
+      yesSound.play().catch(() => {});
+    }
+
+    /** Play nope sound (No button runaway) */
+    function playNoSound() {
+      if (!noSound) return;
+      noSound.volume = 0.25;
+      noSound.currentTime = 0;
+      noSound.play().catch(() => {});
+    }
+
+    /**
+     * Move the "No" button to a random position within viewport
+     * Keeps button fully visible and inside bounds
+     */
+    function moveNoButton() {
+      const wrapper = btnNoWrapper;
+      const padding = 20;
+      const wrapperWidth = 140;
+      const wrapperHeight = 50;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      const maxX = Math.max(0, vw - wrapperWidth - padding);
+      const maxY = Math.max(0, vh - wrapperHeight - padding);
+      const minX = padding;
+      const minY = padding;
+
+      const newX = Math.random() * (maxX - minX + 1) + minX;
+      const newY = Math.random() * (maxY - minY + 1) + minY;
+
+      wrapper.style.position = 'fixed';
+      wrapper.style.left = `${newX}px`;
+      wrapper.style.top = `${newY}px`;
+      wrapper.style.zIndex = '1000';
+    }
+
+    /**
+     * Set up the No button to run away on hover and click attempts
+     */
+    function initNoButton() {
+      // Events that trigger the button to move
+      const moveEvents = ['mouseenter', 'mouseover', 'click', 'touchstart'];
+
+      moveEvents.forEach(eventType => {
+        btnNo.addEventListener(eventType, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          playNoSound();
+          moveNoButton();
+        });
+      });
+
+      // Prevent focus (keyboard tab)
+      btnNo.setAttribute('tabindex', '-1');
+    }
+
+    /**
+     * Transition from question page to scrolling letter
+     */
+    function showLoveMessage() {
+      startBackgroundMusic();
+      playYesSound();
+      pageQuestion.classList.add('fade-out');
+
+      setTimeout(() => {
+        pageQuestion.style.display = 'none';
+        pageMessage.classList.add('visible');
+        heartsContainer.style.opacity = '1';
+        heartsContainer.style.transition = 'opacity 1s ease';
+        startAutoScroll();
+      }, 500);
+    }
+
+    // ===== Auto-scroll (movie credits style) =====
+    let autoScrollId = null;
+
+    /**
+     * Start auto-scroll: content scrolls until "I love you" is centered.
+     * Uses requestAnimationFrame for smooth animation.
+     */
+    function startAutoScroll() {
+      if (!scrollContainer) return;
+
+      const loveYouEl = document.getElementById('loveYou');
+      if (!loveYouEl) return;
+
+      // Start at top of content
+      scrollContainer.scrollTop = 0;
+
+      // Target: scroll so "I love you" is centered in viewport
+      const targetScrollTop = loveYouEl.offsetTop - (scrollContainer.clientHeight / 2) + (loveYouEl.offsetHeight / 2);
+      const maxScroll = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+      const finalTarget = Math.min(Math.max(0, targetScrollTop), maxScroll);
+
+      const duration = 30000; // 50 seconds
+      const startScrollTop = 0;
+      const startTime = performance.now();
+
+      function animateScroll(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        scrollContainer.scrollTop = startScrollTop + (finalTarget - startScrollTop) * progress;
+
+        if (progress < 1) {
+          autoScrollId = requestAnimationFrame(animateScroll);
+        } else {
+          autoScrollId = null;
+        }
+      }
+
+      autoScrollId = requestAnimationFrame(animateScroll);
+    }
+
+    /**
+     * Initialize Yes button: hover → wandSound (stops on mouseleave), click → yesSound
+     */
+    let lastWandSound = 0;
+    function initYesButton() {
+      btnYes.addEventListener('click', showLoveMessage);
+      btnYes.addEventListener('mouseenter', () => {
+        if (Date.now() - lastWandSound > 400) {
+          lastWandSound = Date.now();
+          playWandSound();
+        }
+      });
+      btnYes.addEventListener('mouseleave', stopWandSound);
+    }
+
+    /**
+     * Reposition No button on window resize to keep it in viewport
+     */
+    function handleResize() {
+      if (pageQuestion.classList.contains('fade-out')) return;
+      const wrapper = btnNoWrapper;
+      if (wrapper.style.position === 'fixed') {
+        moveNoButton();
+      }
+    }
+
+    // Initialize
+    initNoButton();
+    initYesButton();
+    window.addEventListener('resize', handleResize);
+  </script>
+</body>
+</html>
